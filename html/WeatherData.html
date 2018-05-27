@@ -1,0 +1,488 @@
+<!doctype html>
+<html>
+
+<head>
+
+	<meta http-equiv="refresh" content="600">
+    <title>ruuvitag weather data</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        body {
+            padding: 10px;
+            margin: 0px;
+        }
+
+        .clear:before,
+        .clear:after {
+            content: "";
+            display: table;
+        }
+
+        .clear:after {
+            clear: both;
+        }
+
+        .clear {
+            *zoom: 1;
+        }
+
+        .gauge {
+            display: block;
+            float: left;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            margin: 0 0 1% 0;
+        }
+
+        .size-1 {
+            width: 20%;
+        }
+
+        .size-2 {
+            width: 30%;
+        }
+
+        .size-3 {
+            width: 48%;
+        }
+
+        .h-split {
+            display: block;
+            float: left;
+            width: 1%;
+            min-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div ><h3> Outdoors</div>
+	<div id="jg1" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg2" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg3" class="gauge size-2"></div>
+    <div class="clear"></div>
+	<div ><h3> Living room</div>
+	<div id="jg4" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg5" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg6" class="gauge size-2"></div>
+    <div class="clear"></div>
+	<div ><h3>Bathroom</div>
+	<div id="jg7" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg8" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg9" class="gauge size-2"></div>
+	<div class="clear"></div>
+	<div ><h3>Bedroom</div>
+	<div id="jg10" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg11" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg12" class="gauge size-2"></div>
+	<div class="clear"></div>
+	<div ><h3>Kitchen</div>
+	<div id="jg13" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg14" class="gauge size-2"></div>
+    <div class="h-split"></div>
+    <div id="jg15" class="gauge size-2"></div>
+	
+    <script src="raphael-2.1.4.min.js"></script>
+    <script src="justgage.js"></script>
+    <script>
+	
+	var requestURL = 'http://liekkimeri.asuscomm.com:5000/getWeatherData'
+var request = new XMLHttpRequest();
+request.open('GET', requestURL);
+request.responseType = 'json';
+request.send();
+
+var Temperature1;
+var Humidity1;
+var Pressure1;
+var Temperature2;
+var Humidity2;
+var Pressure2;
+var Temperature3;
+var Humidity3;
+var Pressure3;
+var Temperature4;
+var Humidity4;
+var Pressure4;
+var Temperature5;
+var Humidity5;
+var Pressure5;
+
+request.onload = function() {
+	var data = request.response;
+	parsedata(data);
+	
+}
+
+function parsedata(jsonObj) {
+
+	Temperature1 = jsonObj[0].Temperature;
+	Humidity1 = jsonObj[0].Humidity;
+	Pressure1 = jsonObj[0].Pressure;
+	
+	Temperature2 = jsonObj[1].Temperature;
+	Humidity2 = jsonObj[1].Humidity;
+	Pressure2 = jsonObj[1].Pressure;
+	
+	Temperature3 = jsonObj[2].Temperature;
+	Humidity3 = jsonObj[2].Humidity;
+	Pressure3 = jsonObj[2].Pressure;
+	
+	Temperature4 = jsonObj[3].Temperature;
+	Humidity4 = jsonObj[3].Humidity;
+	Pressure4 = jsonObj[3].Pressure;
+	
+	Temperature5 = jsonObj[4].Temperature;
+	Humidity5 = jsonObj[4].Humidity;
+	Pressure5 = jsonObj[4].Pressure;
+	
+   
+        var jg1, jg2, jg3, jg4, jg5, jg6, jg7, jg8, jg9, jg10, jg11, jg12, jg13, jg14, jg15;
+		
+		var defs1 = {
+            label: "Temperature",
+            value: Temperature1,
+            min: -40,
+            max: 40,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs2 = {
+            label: "Pressure",
+            value: Pressure1,
+            min: 813,
+            max: 1213,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+
+		var defs3 = {
+            label: "Humidity",
+            value: Humidity1,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs4 = {
+            label: "Temperature",
+            value: Temperature2,
+            min: -40,
+            max: 40,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs5 = {
+            label: "Pressure",
+            value: Pressure2,
+            min: 813,
+            max: 1213,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+
+		var defs6 = {
+            label: "Humidity",
+            value: Humidity2,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs7 = {
+            label: "Temperature",
+            value: Temperature3,
+            min: -40,
+            max: 40,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs8 = {
+            label: "Pressure",
+            value: Pressure3,
+            min: 813,
+            max: 1213,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+
+		var defs9 = {
+            label: "Humidity",
+            value: Humidity3,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs10 = {
+            label: "Temperature",
+            value: Temperature4,
+            min: -40,
+            max: 40,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs11 = {
+            label: "Pressure",
+            value: Pressure4,
+            min: 813,
+            max: 1213,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs12 = {
+            label: "Humidity",
+            value: Humidity4,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs13 = {
+            label: "Temperature",
+            value: Temperature5,
+            min: -40,
+            max: 40,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs14 = {
+            label: "Pressure",
+            value: Pressure5,
+            min: 813,
+            max: 1213,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		var defs15 = {
+            label: "Humidity",
+            value: Humidity5,
+            min: 0,
+            max: 100,
+            decimals: 0,
+            gaugeWidthScale: 0.6,
+            pointer: true,
+            pointerOptions: {
+                toplength: 10,
+                bottomlength: 10,
+                bottomwidth: 2
+            },
+            counter: true,
+            relativeGaugeSize: true
+        }
+		
+		
+
+        jg1 = new JustGage({
+            id: "jg1",
+            defaults: defs1
+        });
+
+        jg2 = new JustGage({
+            id: "jg2",
+            defaults: defs2
+        });
+
+        jg3 = new JustGage({
+            id: "jg3",
+            defaults: defs3
+        });
+		
+		jg4 = new JustGage({
+            id: "jg4",
+            defaults: defs4
+        });
+
+        jg5 = new JustGage({
+            id: "jg5",
+            defaults: defs5
+        });
+
+        jg6 = new JustGage({
+            id: "jg6",
+            defaults: defs6
+        });
+		
+		jg7 = new JustGage({
+            id: "jg7",
+            defaults: defs7
+        });
+
+        jg8 = new JustGage({
+            id: "jg8",
+            defaults: defs8
+        });
+
+        jg9 = new JustGage({
+            id: "jg9",
+            defaults: defs9
+        });
+		
+		jg10 = new JustGage({
+            id: "jg10",
+            defaults: defs10
+        });
+		
+		jg11 = new JustGage({
+            id: "jg11",
+            defaults: defs11
+        });
+		
+		jg12 = new JustGage({
+            id: "jg12",
+            defaults: defs12
+        });
+		
+		jg13 = new JustGage({
+            id: "jg13",
+            defaults: defs13
+        });
+		
+		jg14 = new JustGage({
+            id: "jg14",
+            defaults: defs14
+        });
+		
+		jg15 = new JustGage({
+            id: "jg15",
+            defaults: defs15
+        });
+
+        
+	}
+    </script>
+</body>
+
+</html>
