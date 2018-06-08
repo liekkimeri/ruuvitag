@@ -45,11 +45,10 @@
 				time.push(jsonObj[i].Time);
 				pressure.push(jsonObj[i].Pressure);
 				temperature.push(jsonObj[i].Temperature);
-				humidity.push(jsonObj[i].Humidity);
-				i = i + 5;
+				humidity.push(jsonObj[i].Humidity);				
 			}
 			
-				
+			reDrawChart();	
 
 			
 			
@@ -83,7 +82,7 @@
 			};
 			
 
-			window.onload = function() {
+			function reDrawChart() {
 				var ctx = document.getElementById('canvas').getContext('2d');
 				window.myLine = Chart.Line(ctx, {
 					data: lineChartData,
