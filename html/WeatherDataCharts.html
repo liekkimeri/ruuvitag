@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Weather data charts</title>
+	<script src="Chart.bundle.js"></script>
+	<script src="utils.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<div style="width:75%;">
+		<canvas id="canvasTemperature"></canvas>
+	</div>
+	<br>
+	<div style="width:75%;">
+		<canvas id="canvasPressure"></canvas>
+	</div>
+	<br>
+	<div style="width:75%;">
+		<canvas id="canvasHumidity"></canvas>
+	</div>
+	
+	<script>
+		
+		var time = [];
+		var OutdoorsTemperature = [];
+		var LivingroomTemperature = [];
+		var BathroomTemperature = [];
+		var BedroomTemperature = [];
+		var KitchenTemperature = [];
+		var OutdoorsPressure = [];
+		var LivingroomPressure = [];
+		var BathroomPressure = [];
+		var BedroomPressure = [];
+		var KitchenPressure = [];
+		var OutdoorsHumidity = [];
+		var LivingroomHumidity = [];
+		var BathroomHumidity = [];
+		var BedroomHumidity = [];
+		var KitchenHumidity = [];
+		var requestURL = 'http://liekkimeri.asuscomm.com:5000/getWeatherDataCharts'
+		var request = new XMLHttpRequest();
+		request.open('GET', requestURL);
+		request.responseType = 'json';
+		request.send();
+		
+		request.onload = function() {
+			var data = request.response;
+			parsedata(data);
+	
+		}
+		
+		function parsedata(jsonObj) {
+			
+			
+			for (i = 0; i < jsonObj.length; i++) 
+			{
+				
+				
+				if(jsonObj[i].Id == "F6:DB:7F:5E:C8:62")
+				{
+					OutdoorsTemperature.push(jsonObj[i].Temperature);
+					OutdoorsPressure.push(jsonObj[i].Pressure);
+					OutdoorsHumidity.push(jsonObj[i].Humidity);
+					time.push(jsonObj[i].Time);
+				}
+				else if(jsonObj[i].Id == "F1:15:2E:FC:0C:3A")
+				{
+					LivingroomTemperature.push(jsonObj[i].Temperature);
+					LivingroomPressure.push(jsonObj[i].Pressure);
+					LivingroomHumidity.push(jsonObj[i].Humidity);
+				}
+				else if(jsonObj[i].Id == "EF:28:0A:7D:E1:1D")
+				{
+					BathroomTemperature.push(jsonObj[i].Temperature);
+					BathroomPressure.push(jsonObj[i].Pressure);
+					BathroomHumidity.push(jsonObj[i].Humidity);
+				}
+				else if(jsonObj[i].Id ==  "E9:7A:A6:0B:51:1E")
+				{
+					BedroomTemperature.push(jsonObj[i].Temperature);
+					BedroomPressure.push(jsonObj[i].Pressure);
+					BedroomHumidity.push(jsonObj[i].Humidity);
+				}
+				else if(jsonObj[i].Id ==  "F0:DE:F8:93:AF:A2")
+				{
+					KitchenTemperature.push(jsonObj[i].Temperature);
+					KitchenPressure.push(jsonObj[i].Pressure);
+					KitchenHumidity.push(jsonObj[i].Humidity);
+				}
+			}
+			
+			reDrawChartTemperature();
+			reDrawChartHumidity();
+			reDrawChartPressure();
+
+			
+			
+		}
+		
+		var configTemperature = {
+			type: 'line',
+			data: {
+				labels: time,
+				datasets: [{
+					label: 'Outdoors',
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: OutdoorsTemperature,
+					fill: false,
+				}, {
+					label: 'Livingroom',
+					fill: false,
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: LivingroomTemperature,
+				}, {
+					label: 'Bathroom',
+					fill: false,
+					backgroundColor: window.chartColors.purple,
+					borderColor: window.chartColors.purple,
+					data: BathroomTemperature,
+				}, {
+					label: 'Bedroom',
+					fill: false,
+					backgroundColor: window.chartColors.green,
+					borderColor: window.chartColors.green,
+					data: BedroomTemperature,
+				}, {
+					label: 'Kitchen',
+					fill: false,
+					backgroundColor: window.chartColors.yellow,
+					borderColor: window.chartColors.yellow,
+					data: KitchenTemperature,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'WeatherData Temperature'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20
+					},
+				},
+				elements: {
+					point: {
+						radius: 0,
+						hitRadius: 5
+					}
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Temperature'
+						}
+					}]
+				}
+			}
+		};
+		
+		var configPressure = {
+			type: 'line',
+			data: {
+				labels: time,
+				datasets: [{
+					label: 'Outdoors',
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: OutdoorsPressure,
+					fill: false,
+				}, {
+					label: 'Livingroom',
+					fill: false,
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: LivingroomPressure,
+				}, {
+					label: 'Bathroom',
+					fill: false,
+					backgroundColor: window.chartColors.purple,
+					borderColor: window.chartColors.purple,
+					data: BathroomPressure,
+				}, {
+					label: 'Bedroom',
+					fill: false,
+					backgroundColor: window.chartColors.green,
+					borderColor: window.chartColors.green,
+					data: BedroomPressure,
+				}, {
+					label: 'Kitchen',
+					fill: false,
+					backgroundColor: window.chartColors.yellow,
+					borderColor: window.chartColors.yellow,
+					data: KitchenPressure,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'WeatherData Pressure'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20
+					},
+				},
+				elements: {
+					point: {
+						radius: 0,
+						hitRadius: 5
+					}
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Pressure (hPa)'
+						}
+					}]
+				}
+			}
+		};
+		
+		var configHumidity = {
+			type: 'line',
+			data: {
+				labels: time,
+				datasets: [{
+					label: 'Outdoors',
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: OutdoorsHumidity,
+					fill: false,
+				}, {
+					label: 'Livingroom',
+					fill: false,
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: LivingroomHumidity,
+				}, {
+					label: 'Bathroom',
+					fill: false,
+					backgroundColor: window.chartColors.purple,
+					borderColor: window.chartColors.purple,
+					data: BathroomHumidity,
+				}, {
+					label: 'Bedroom',
+					fill: false,
+					backgroundColor: window.chartColors.green,
+					borderColor: window.chartColors.green,
+					data: BedroomHumidity,
+				}, {
+					label: 'Kitchen',
+					fill: false,
+					backgroundColor: window.chartColors.yellow,
+					borderColor: window.chartColors.yellow,
+					data: KitchenHumidity,
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'WeatherData Humidity'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20
+					},
+				},
+				elements: {
+					point: {
+						radius: 0,
+						hitRadius: 5
+					}
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Humidity (%)'
+						}
+					}]
+				}
+			}
+		};
+			
+
+			function reDrawChartTemperature() {
+				var ctx = document.getElementById('canvasTemperature').getContext('2d');
+				window.myLine = new Chart(ctx, configTemperature);
+			};
+			function reDrawChartPressure() {
+				var ctx = document.getElementById('canvasPressure').getContext('2d');
+				window.myLine = new Chart(ctx, configPressure);
+			};
+			function reDrawChartHumidity() {
+				var ctx = document.getElementById('canvasHumidity').getContext('2d');
+				window.myLine = new Chart(ctx, configHumidity);
+			};
+		
+		
+		
+	</script>
+</body>
+
+</html>
