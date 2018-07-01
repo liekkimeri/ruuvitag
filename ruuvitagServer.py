@@ -1,15 +1,15 @@
 from flask import Flask,json
-import time
 import os
-from datetime import datetime
+import datetime
 from flask_cors import CORS,cross_origin
 import sqlite3 as lite
 import sys
-
+import pytz
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/getWeatherData": {"origins": "*"}})
+cors = CORS(app, resources={r"/getWeatherDataCharts": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/getWeatherData")
@@ -44,6 +44,45 @@ def getWeatherData():
 		con.close()
 	
 	return json.dumps(weatherList)
+	
+@app.route("/getWeatherDataCharts")
+def getWeatherDataCharts():
+	weatherList =[]
+	tz = pytz.timezone('Europe/Helsinki')
+	con = lite.connect('database.db')
+	with con:
+		
+		
+		yesterday= datetime.datetime.now(tz=tz)- datetime.timedelta(days = 1)
+		tomorro =  datetime.datetime.now(tz=tz)+ datetime.timedelta(days = 1)
+		print(yesterday)
+		print(tomorro)
+		sqlCmd = "select ruuvitagID,temperature,pressure,humidity,timestamp   from ruuvitagData where timestamp  >= '"+ yesterday.strftime("%Y-%m-%d") +"' AND timestamp <= '" + tomorro.strftime("%Y-%m-%d") + "'"
+		print(sqlCmd)
+		
+		cur = con.cursor()
+		cur.execute(sqlCmd)
+		
+		rows = cur.fetchall()
+
+		for row in rows:
+			data = row
+			weatherDict = {
+					'Id':data[0] ,
+					'Temperature':data[1],
+					'Humidity':data[3],
+					'Pressure':data[2],
+					'Time':data[4]}
+			weatherList.append(weatherDict)
+
+		
+			
+	con.close()
+	
+	return json.dumps(weatherList)
+		
+	
+
 
 if __name__ == "__main__":
     app.run(host= '0.0.0.0')
