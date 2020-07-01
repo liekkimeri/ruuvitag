@@ -1,5 +1,5 @@
 # ruuvitag
-Tallentaan dataa SQLite tietokantaan ja näyttää viimeiset mittaustulokset wepsivulla
+Tallentaan dataa SQLite tietokantaan ja näyttää viimeiset mittaustulokset websivulla
 
 ## Käytetyt elementit
   - [Raspberry Pi 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)
@@ -14,10 +14,10 @@ Tallentaan dataa SQLite tietokantaan ja näyttää viimeiset mittaustulokset wep
 Kannan luonti onnistuu helposti kommennolla "sqlite3 database.db < schema.sql"
 
 ## ruuvitag.py 
-Muut tag-muuttujan sisältä vastaamaan sinun ruuviTagin mac-osoitteita.
+Muuta tag-muuttujan sisältä vastaamaan sinun ruuviTagin mac-osoitteita.
 
 ## ruuvitagServer.py
-Muut tag-muuttujan sisältä vastaamaan sinun ruuviTagin mac-osoitteita.
+Muuta tag-muuttujan sisältä vastaamaan sinun ruuviTagin mac-osoitteita.
 
 ## www-sivut
 Asenna ngix ja kopio html-kansion sisältö kansioon /var/www/html
